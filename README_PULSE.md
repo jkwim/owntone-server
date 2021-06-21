@@ -146,19 +146,19 @@ server = "localhost"
 ## User Mode with Auto Startup Script
 
 There are few requirements for running OwnTone correctly in User Mode because OwnTone requires write permissions to several locations owned by 'root' by default. The steps below will help to setup the correct environment so that OwnTone can be started as a user and will work fine. The author has tested these steps in a Raspberry Pi 4 running Ubuntu 20.04 LTS. The steps should work with any Ubuntu 20.04 LTS installation and could be adapted for any other version of Ubuntu/Linux environment.
-### Step 1: Create a new user 'owntone'
+### Step 1: Create a new user `owntone`
 ```
 sudo adduser owntone
 ```
-### Step 2: Add user 'owntone' in to the group 'pulse-access'
+### Step 2: Add user `owntone` in to the group `pulse-access`
 ```
 sudo adduser owntone pulse-access
 ```
-### Step 3: Add user 'owntone' in to the group 'audio'
+### Step 3: Add user `owntone` in to the group `audio`
 ```
 sudo adduser owntone audio
 ```
-### Step 4: Create own log file directory instead of '/var/log'
+### Step 4: Create own log file directory instead of `/var/log`
 ```
 sudo mkdir /var/log/owntone
 sudo chown owntone /var/log/owntone
@@ -168,15 +168,21 @@ sudo chown owntone /var/log/owntone
 sudo mkdir /var/cache/owntone
 sudo chown -R owntone /var/cache/owntone
 ```
-### Step 6: Setup persistent access permission to tmpfile system
-Create '/usr/lib/tmpfiles.d/owntone.conf' with following contents
+### Step 6: Setup persistent access permission to `tmpfile` system
+Create `/usr/lib/tmpfiles.d/owntone.conf` with following contents
+Example of creating the file using the `vi` editor:
+```
+sudo vi /usr/lib/tmpfiles.d/owntone.conf
+```
+Press `i` to switch to insert mode and paste the text below.
+Then pres `ESC` and type `:wq!`
 ```
 #Type Path            Mode UID      GID    Age Argument
 d     /run/owntone    0755 owntone owntone -   -
 ```
 Reboot after the file has been created
 
-### Step 7: Changes to /etc/owntone.conf
+### Step 7: Changes to `/etc/owntone.confi`
 Change the location of the log file
 ```
         # Log file and level
@@ -189,11 +195,11 @@ Change the audio type
         type = "pulseaudio"
 ```
 ### Step 8: Test the manual start up
-Note that '-d 5' turns on the maximum level of DEBUG messages to the log file
+Note that `-d 5` turns on the maximum level of `DEBUG` messages to the log file
 ```
 /usr/sbin/owntone -P /var/run/owntone/owntone.pid -d 5
 ```
-Check the '/var/log/owntone/owntone.log' while starting. 
+Check the `/var/log/owntone/owntone.log` while starting. 
 You can do:
 ```
 tail -200f /var/log/owntone/owntone.log
