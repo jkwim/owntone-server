@@ -143,6 +143,14 @@ In the `audio` section of `/etc/owntone.conf`, set `server` to `localhost`:
 server = "localhost"
 ```
 
+## User Mode with Auto Start Up Script
+
+There are few requirements for running OwnTone correctly in User Mode because OwnTone requires write permissions to several locations owned by 'root' by default. The steps below will help to setup the correct environment so that OwnTone can be started as a user and will work fine. The author has tested these steps in a Raspberry Pi 4 with Ubuntu 20.04.LTS. The steps should work with any Ubuntu 20.04 LTS installation and could be adapted for any other version of Ubuntu/Linux environment also.
+### Step 1: Create a new user 'owntone'
+```
+
+```
+
 ---
 
 [1] Note that Pulseaudio will warn against system mode. However, in this use
