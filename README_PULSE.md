@@ -12,6 +12,7 @@ sessions as expected.
 
 - [System mode](#system-mode-with-bluetooth-support)
 - [User mode](#user-mode-with-network-access)
+- [User Mode with Auto Startup Script](#user-mode-with-auto-startup-script) 
 
 
 ## System Mode with Bluetooth support
@@ -198,6 +199,8 @@ Change the audio type
         # Type of the output (alsa, pulseaudio, dummy or disabled)
         type = "pulseaudio"
 ```
+[Note: Automatic Log Rotation will not be actve for /var/log/owntone directory by default. Steps to activate automatic log rotation to be added here.]
+
 ### Step 8: Test the manual start up
 Note that `-d 5` turns on the maximum level of `DEBUG` messages to the log file
 ```
@@ -226,6 +229,23 @@ The idea of the script is to start a PulseAudio server immediately after a boot 
 
 Using your prefered editor, create a script file called `/home/owntone/start_pulse_owntone.sh`
 ```
+#!/bin/bash
+# Script to start PulseAudio and OwnTone immediately after a reboot
+
+USERCRONLOG=/home/owntone/cron.log
+
+echo > ${USERCRONLOG}
+#echo `id -u`   >> ${USERCRONLOG}
+echo `date` >> ${USERCRONLOG}
+ps -ef | grep "pulse" >>  ${USERCRONLOG}
+/usr/bin/pulseaudio --daemonize=no --log-target=journal &
+ps -ef | grep "pulse" >>  ${USERCRONLOG}
+sleep 20
+/usr/sbin/owntone -P /var/run/owntone/owntone.pid -d 5
+ps -ef | grep "/usr/sbin/owntone" >>  ${USERCRONLOG}
+sleep 100
+#tail -5000 /var/log/owntone/owntone.log | grep laudio | tail -10 >> ${USERCRONLOG}
+grep laudio /var/log/owntone/owntone.log |  tail -10 >> ${USERCRONLOG}
 
 ```
 Then make it executable
